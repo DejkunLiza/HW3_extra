@@ -1,0 +1,21 @@
+import urllib.request
+import asyncio
+import aiohttp
+
+URL = 'https://api.github.com/events' # API EXAMPLE LINK
+MAX_CLIENTS = 3  #HERE WE CAN SETUP NUM OF USERS
+
+
+async def fetch_async(pid):
+    response = await aiohttp.request('GET', URL)
+    response.close()
+    
+
+async def asynchronous():
+    tasks = [asyncio.ensure_future(
+        fetch_async(i)) for i in range(1, MAX_CLIENTS + 1)]
+    await asyncio.wait(tasks)
+
+ioloop = asyncio.get_event_loop()
+ioloop.run_until_complete(asynchronous())
+ioloop.close()
